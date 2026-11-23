@@ -69,11 +69,11 @@ dl.kv dt{color:var(--muted)}dl.kv dd{margin:0;font-variant-numeric:tabular-nums;
 <body>
 <header class="top">
   <h1>宇树和其他品牌的夹爪、灵巧手</h1>
-  <p>20 款末端按同一比例分三排：宇树的六款（两款夹爪、四款灵巧手），国内其他厂家的八款灵巧手，国外的六款。模型都是厂家自己公开的 URDF 或 MuJoCo 模型和网格，都是右手。拖动「开合」看手指怎么动；点「宇树」「国内」「国外」单看一排，点编号、卡片或模型本身单看一款。地面每小格 10 mm，每大格 50 mm。</p>
+  <p>22 款末端按同一比例分三排：宇树的六款（两款夹爪、四款灵巧手），国内其他厂家的十款灵巧手，国外的六款。模型都是厂家自己公开的 URDF 或 MuJoCo 模型和网格，都是右手。拖动「开合」看手指怎么动；点「宇树」「国内」「国外」单看一排，点编号、卡片或模型本身单看一款。地面每小格 10 mm，每大格 50 mm。</p>
 </header>
 <main>
   <div class="stage" id="stage">
-    <canvas id="c3d" aria-label="20 款夹爪和灵巧手分三排的 3D 视图：宇树六款，国内其他厂家八款，国外六款"></canvas>
+    <canvas id="c3d" aria-label="22 款夹爪和灵巧手分三排的 3D 视图：宇树六款，国内其他厂家十款，国外六款"></canvas>
     <div class="overlay" id="overlay"></div>
     <div class="stage-note" id="stage-note">正在载入网格…</div>
   </div>
@@ -83,7 +83,7 @@ dl.kv dt{color:var(--muted)}dl.kv dd{margin:0;font-variant-numeric:tabular-nums;
     <div class="ctl"><label class="toggle"><input type="checkbox" id="shadows" checked>阴影</label><label class="toggle" title="用 RoomEnvironment 做反射，金属件更真实；这台机器上要多等几秒"><input type="checkbox" id="env" checked>环境反射</label></div>
     <div class="result" id="result">正在载入…</div>
   </div>
-  <section class="cards" id="cards" aria-label="20 款末端的数据"></section>
+  <section class="cards" id="cards" aria-label="22 款末端的数据"></section>
   <section class="card" id="notes"></section>
 </main>
 <script type="module">
@@ -140,8 +140,12 @@ const OTHERS=[
    closed:{r_f_joint1_1:1.4,r_f_joint1_2:.6,r_f_joint1_3:.5,r_f_joint1_4:.5,...fill([2,3,4,5],k=>({[`r_f_joint${k}_2`]:1.1,[`r_f_joint${k}_3`]:1.1,[`r_f_joint${k}_4`]:.9}))},look:{dark:'black',mid:'graphite',light:'white'}},
   {id:'wuji_hand',name:'Wuji Hand 2.1',load:()=>import('./other_hands_mesh/wuji_hand.mjs'),up:[0,0,-1],front:[0,1,0],
    closed:{r_thumb_cmc_flex:.8,r_thumb_cmc_abd:.6,r_thumb_mcp:.6,r_thumb_ip:.6,...fill(['index_finger','middle_finger','ring_finger','pinky'],f=>({[`r_${f}_mcp_flex`]:1.1,[`r_${f}_pip`]:1.2,[`r_${f}_dip`]:.9}))},look:{dark:'black',mid:'aluminium',light:'aluminium'}},
+  {id:'agibot_omnihand',name:'OmniHand 2025',load:()=>import('./other_hands_mesh/agibot_omnihand.mjs'),up:[0,0,1],front:[1,0,0],
+   closed:{R_thumb_roll_joint:.9,R_thumb_abad_joint:-1,R_thumb_mcp_joint:.6,...fill(F4,f=>({[`R_${f}_pip_joint`]:1.2}))},look:{dark:'black',mid:'lightgrey',light:'white'}},
   {id:'robotera_xhand1',name:'XHAND1 Pro-U',load:()=>import('./other_hands_mesh/robotera_xhand1.mjs'),up:[0,0,1],front:[1,0,0],
    closed:{right_hand_thumb_mcp0_joint:1.2,right_hand_thumb_mcp1_joint:.6,right_hand_thumb_pip_joint:.6,...fill(['index','mid','ring','pinky'],f=>({[`right_hand_${f}_mcp1_joint`]:1.2,[`right_hand_${f}_pip_joint`]:.8,[`right_hand_${f}_dip_joint`]:1}))},look:{body:'black',cover:'graphite'}},
+  {id:'fourier_fdh6',name:'FDH-6',load:()=>import('./other_hands_mesh/fourier_fdh6.mjs'),up:[0,0,-1],front:[0,1,0],
+   closed:{R_thumb_proximal_yaw_joint:-1.2,R_thumb_proximal_pitch_joint:.8,...fill(F4,f=>({[`R_${f}_proximal_joint`]:-1.3}))},look:{body:'white'}},
   {id:'sharpa_wave',name:'SharpaWave',load:()=>import('./other_hands_mesh/sharpa_wave.mjs'),up:[0,0,1],front:[1,0,0],
    closed:{right_thumb_CMC_FE:1.2,right_thumb_MCP_FE:.6,right_thumb_IP:.6,...fill(F4,f=>({[`right_${f}_MCP_FE`]:1.2,[`right_${f}_PIP`]:1.2,[`right_${f}_DIP`]:.9}))},look:{body:'lightgrey',pad:'rubber'}},
   {id:'shadow_hand',name:'Shadow Hand',load:()=>import('./other_hands_mesh/shadow_hand.mjs'),up:[0,0,1],front:[1,0,0],
@@ -234,14 +238,14 @@ function renderNotes(){
   const d1=other('D1-T 机械臂');
   $('notes').innerHTML=`<h2>怎么画的</h2><ul>
   <li><b>宇树</b>：网格和关节来自宇树公开的 unitree_ros 仓库（BSD-3-Clause）。Dex1-1 用提交 8927c58，其余用 157ff95（2026-11-13）。Z1 夹爪没有单独的 URDF，取自 Z1 机械臂 xacro 里装夹爪的那一段。网格按 ${range(UNITREE,D=>D.cell*1000)||'0.3–0.7'} mm 的格子合并顶点，外形误差在半格以内。</li>
-  <li><b>其他品牌</b>：${OTHERS.length} 款都用厂家（或作者）自己在 GitHub 公开的 URDF 或 MuJoCo 模型，钉在下载时的提交上，每个文件都和 git 的哈希核对过。许可证各不相同（卡片上写了），都是 Apache-2.0、MIT 或 BSD，全文在本站仓库的 <a href="https://github.com/tony1213/robot-hands-3d/tree/main/LICENSES" target="_blank" rel="noopener">LICENSES</a> 里。因时官网只给 STEP（RAR 压缩包），这里用宇树 xr_teleoperate 里的因时手模型。</li>
+  <li><b>其他品牌</b>：${OTHERS.length} 款都用厂家（或作者）自己在 GitHub 公开的 URDF 或 MuJoCo 模型，钉在下载时的提交上，每个文件都和 git 的哈希核对过。许可证各不相同（卡片上写了）：多数是 Apache-2.0、MIT 或 BSD，全文在本站仓库的 <a href="https://github.com/tony1213/robot-hands-3d/tree/main/LICENSES" target="_blank" rel="noopener">LICENSES</a> 里；傅利叶的是 GPL-3.0，生成它的简化网格用到的源文件（傅利叶的原文件和脚本）在 <a href="https://github.com/tony1213/robot-hands-3d/tree/main/source" target="_blank" rel="noopener">source</a> 里；智元的仓库没写许可证，版权归智元。因时官网只给 STEP（RAR 压缩包），这里用宇树 xr_teleoperate 里的因时手模型。</li>
   <li><b>简化</b>：其他品牌的网格先在 0.02 mm 的格子上焊接顶点，再用边折叠（Garland–Heckbert 二次误差）简化，形状偏差不超过 0.2 mm；平面上的三角形合并得多，曲面和棱边保留。${OTHERS.length} 款原网格合计约 ${wan(OTHERS.reduce((a,e)=>a+(DATA[e.id]?.trianglesSource??0),0))}个三角形，简化后约 ${wan(OTHERS.reduce((a,e)=>a+(DATA[e.id]?.triangles??0),0))}个。</li>
   <li><b>关节</b>：按模型里的原点、轴和限位动；URDF 写了随动（mimic）的关节跟着主动关节走。傲意 ROHand 的手指是连杆，URDF 表达不了闭环，这里按傲意自己的连杆公式（FingerMathURDF.py）由滑块位置算出各关节。「合拢」是这里选的一个握持姿态，不是厂家给的；没写随动关系的耦合关节（如 Shadow 的指尖、星动纪元的远端指节）按大致比例一起动。</li>
-  <li><b>颜色</b>：有材质色的模型（Tesollo 的网格、Allegro、灵心巧手、Shadow 等）按模型的颜色；因时按官网照片（白色掌心、黑色手指）；其余没有可用颜色的按官网照片近似。</li>
+  <li><b>颜色</b>：有材质色的模型（Tesollo 的网格、Allegro、灵心巧手、智元、Shadow 等）按模型的颜色；因时按官网照片（白色掌心、黑色手指）；其余没有可用颜色的按官网照片近似。</li>
   <li><b>立柱</b>：每款立在一根小立柱上，最低那一面（多数是手腕法兰，LEAP 是掌根的边）的中心对准立柱。不按模型根连杆的原点对：宇树 Dex5-1 的原点在拇指根部，离法兰中心 27 mm；Allegro、LEAP 的原点也不在法兰中心。</li>
   <li><b>质量</b>：卡片上同时写官网的数和 URDF 各连杆相加的数，两者常不一致（如灵心巧手 L20：URDF 0.2 kg，官网约 1.2 kg；因时：URDF 0.19 kg，官网 0.54 kg），以官网为准。Shadow 的 4.3 kg 含装电机的前臂。</li>
-  <li><b>没画的</b>：宇树 D1-T 和 D2 机械臂带的夹爪（${esc(d1.note)}。D1-T 没有公开的模型；<a href="https://github.com/unitreerobotics/D2-Arm" target="_blank" rel="noopener">D2-Arm 仓库</a>里夹爪是一块不动的整体，也没写许可证）；帕西尼 DexH13 和星动纪元标准版 XHAND1（没有厂家公开的模型，只有第三方仓库里的副本）；智元 OmniHand 2025（仓库没写许可证）和傅利叶 FDH-6（模型是 GPL-3.0：转发简化后的网格，要连同全部源文件和生成脚本按 GPL 一起公开）没有收进公开版；SCHUNK SVH（模型是要展开的 xacro 宏）、Shadow DEX-EE（三指）、TetherIA Aero Hand（开源手）这一版没画。</li>
-  <li><b>本站</b>：页面、简化后的网格和各家的许可证都在 GitHub 仓库 <a href="https://github.com/tony1213/robot-hands-3d" target="_blank" rel="noopener">tony1213/robot-hands-3d</a>。</li></ul>`;
+  <li><b>没画的</b>：宇树 D1-T 和 D2 机械臂带的夹爪（${esc(d1.note)}。D1-T 没有公开的模型；<a href="https://github.com/unitreerobotics/D2-Arm" target="_blank" rel="noopener">D2-Arm 仓库</a>里夹爪是一块不动的整体，也没写许可证）；帕西尼 DexH13 和星动纪元标准版 XHAND1（没有厂家公开的模型，只有第三方仓库里的副本）；SCHUNK SVH（模型是要展开的 xacro 宏）、Shadow DEX-EE（三指）、TetherIA Aero Hand（开源手）这一版没画。</li>
+  <li><b>本站</b>：页面、简化后的网格、各家的许可证和傅利叶网格的源文件都在 GitHub 仓库 <a href="https://github.com/tony1213/robot-hands-3d" target="_blank" rel="noopener">tony1213/robot-hands-3d</a>。</li></ul>`;
 }
 function renderResult(){
   const done=ENDS.filter(e=>DATA[e.id]);

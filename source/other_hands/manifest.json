@@ -1,0 +1,28 @@
+{
+ "fourier_fdh6": {
+  "repo": "FFTAI/Wiki-GRx-Models",
+  "commit": "7d96c758f048fe1bf92b3258864d94771ae0c093",
+  "root": "Dexterous_hand/fourier_hand_6dof",
+  "model": "urdf/fourier_right_hand_6dof.urdf",
+  "spdx": "GPL-3.0",
+  "licences": [
+   "LICENSE"
+  ],
+  "files": {
+   "LICENSE": "LICENSE",
+   "meshes/fourier_hand_6dof/R_hand_base_link.STL": "Dexterous_hand/fourier_hand_6dof/meshes/fourier_hand_6dof/R_hand_base_link.STL",
+   "meshes/fourier_hand_6dof/R_index_intermediate_link.STL": "Dexterous_hand/fourier_hand_6dof/meshes/fourier_hand_6dof/R_index_intermediate_link.STL",
+   "meshes/fourier_hand_6dof/R_index_proximal_link.STL": "Dexterous_hand/fourier_hand_6dof/meshes/fourier_hand_6dof/R_index_proximal_link.STL",
+   "meshes/fourier_hand_6dof/R_middle_intermediate_link.STL": "Dexterous_hand/fourier_hand_6dof/meshes/fourier_hand_6dof/R_middle_intermediate_link.STL",
+   "meshes/fourier_hand_6dof/R_middle_proximal_link.STL": "Dexterous_hand/fourier_hand_6dof/meshes/fourier_hand_6dof/R_middle_proximal_link.STL",
+   "meshes/fourier_hand_6dof/R_pinky_intermediate_link.STL": "Dexterous_hand/fourier_hand_6dof/meshes/fourier_hand_6dof/R_pinky_intermediate_link.STL",
+   "meshes/fourier_hand_6dof/R_pinky_proximal_link.STL": "Dexterous_hand/fourier_hand_6dof/meshes/fourier_hand_6dof/R_pinky_proximal_link.STL",
+   "meshes/fourier_hand_6dof/R_ring_intermediate_link.STL": "Dexterous_hand/fourier_hand_6dof/meshes/fourier_hand_6dof/R_ring_intermediate_link.STL",
+   "meshes/fourier_hand_6dof/R_ring_proximal_link.STL": "Dexterous_hand/fourier_hand_6dof/meshes/fourier_hand_6dof/R_ring_proximal_link.STL",
+   "meshes/fourier_hand_6dof/R_thumb_distal_link.STL": "Dexterous_hand/fourier_hand_6dof/meshes/fourier_hand_6dof/R_thumb_distal_link.STL",
+   "meshes/fourier_hand_6dof/R_thumb_proximal_pitch_link.STL": "Dexterous_hand/fourier_hand_6dof/meshes/fourier_hand_6dof/R_thumb_proximal_pitch_link.STL",
+   "meshes/fourier_hand_6dof/R_thumb_proximal_yaw_link.STL": "Dexterous_hand/fourier_hand_6dof/meshes/fourier_hand_6dof/R_thumb_proximal_yaw_link.STL",
+   "urdf/fourier_right_hand_6dof.urdf": "Dexterous_hand/fourier_hand_6dof/urdf/fourier_right_hand_6dof.urdf"
+  }
+ }
+}
