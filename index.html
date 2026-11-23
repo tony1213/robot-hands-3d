@@ -1,0 +1,433 @@
+<!doctype html>
+<html lang="zh-Hans">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>宇树和其他品牌的夹爪、灵巧手</title>
+<style>
+/* The stage (the ends in three rows on a measuring floor: Unitree's six, other Chinese makers' hands, makers
+   abroad), the controls under it, one card per end, the notes; the stage keeps its own background in both themes. */
+:root{--bg:#f3f5f7;--panel:#ffffff;--ink:#1b232c;--muted:#56616d;--faint:#87929e;--line:#dce1e7;
+  --accent:#1f5fa6;--accent-soft:#e5eef9;--stage:#e9ecef;--floor:#dadfe4;--grid-minor:#c9d0d7;--grid-major:#a9b2bc;--plate:#d9dde2;--stand:#4a5058;--tag-bg:rgba(255,255,255,.88);
+  --tone-1:#a8364f;--tone-2:#6b7785;--tone-3:#2f7d6d;--tone-4:#8a5a1f;--tone-5:#5b4fa3;--tone-6:#1f6fa6;--tone-cn:#b0472a;--tone-intl:#3b6e8f;
+  --sans:"PingFang SC","Noto Sans SC","Noto Sans CJK SC","Microsoft YaHei","Source Han Sans SC",system-ui,sans-serif;
+  --mono:ui-monospace,SFMono-Regular,Menlo,Consolas,monospace}
+@media (prefers-color-scheme:dark){:root:not([data-theme="light"]){--bg:#15191e;--panel:#1d2329;--ink:#e6eaee;--muted:#a3adb8;--faint:#7c8794;--line:#323a43;
+  --accent:#7ab0ea;--accent-soft:#1f3046;--stage:#262c33;--floor:#2c333a;--grid-minor:#343c45;--grid-major:#46505b;--plate:#3b434c;--stand:#5c646e;--tag-bg:rgba(29,35,41,.9);
+  --tone-1:#f08ba0;--tone-2:#a3adb8;--tone-3:#5cc4ab;--tone-4:#e0a764;--tone-5:#a99cf0;--tone-6:#7ab0ea;--tone-cn:#f0a07f;--tone-intl:#8cc0e0;color-scheme:dark}}
+:root[data-theme="dark"]{--bg:#15191e;--panel:#1d2329;--ink:#e6eaee;--muted:#a3adb8;--faint:#7c8794;--line:#323a43;
+  --accent:#7ab0ea;--accent-soft:#1f3046;--stage:#262c33;--floor:#2c333a;--grid-minor:#343c45;--grid-major:#46505b;--plate:#3b434c;--stand:#5c646e;--tag-bg:rgba(29,35,41,.9);
+  --tone-1:#f08ba0;--tone-2:#a3adb8;--tone-3:#5cc4ab;--tone-4:#e0a764;--tone-5:#a99cf0;--tone-6:#7ab0ea;--tone-cn:#f0a07f;--tone-intl:#8cc0e0;color-scheme:dark}
+*{box-sizing:border-box}
+html,body{margin:0;background:var(--bg);color:var(--ink);font:14px/1.6 var(--sans)}
+body{padding-left:max(16px,env(safe-area-inset-left,0px));padding-right:max(16px,env(safe-area-inset-right,0px))}
+a{color:var(--accent)}
+button:focus-visible,input:focus-visible{outline:2px solid var(--accent);outline-offset:2px}
+header.top,main{max-width:1800px;margin:0 auto}
+header.top{padding-block:16px 4px}
+header.top h1{margin:0;font-size:20px;text-wrap:balance}
+header.top p{margin:4px 0 0;color:var(--muted);font-size:13px;max-width:140ch}
+main{display:flex;flex-direction:column;gap:12px;padding-block:12px 40px}
+.stage{position:relative;height:min(66vh,720px);min-height:380px;border-radius:10px;overflow:hidden;background:var(--stage);border:1px solid var(--line)}
+.stage canvas{display:block;width:100%;height:100%;touch-action:none}
+.stage-note{position:absolute;inset:auto 12px 12px 12px;padding:8px 10px;border-radius:8px;background:var(--panel);color:var(--muted);font-size:13px;border:1px solid var(--line)}
+.overlay{position:absolute;inset:0;pointer-events:none;overflow:hidden}
+.overlay .tag{position:absolute;left:0;top:0;white-space:nowrap;will-change:transform;padding:3px 9px 4px;border-radius:8px;background:var(--tag-bg);border:1px solid var(--line);border-top:3px solid var(--tone);font-size:12px;line-height:1.35;text-align:center;color:var(--ink)}
+.overlay .tag b{font-size:13px}.overlay .tag span{display:block;font-family:var(--mono);font-size:11px;color:var(--muted)}
+.overlay.mid .tag span{display:none}
+.overlay.compact .tag{padding:0 6px 1px;font-size:11px;border-top-width:2px}.overlay.compact .tag b{font-size:11px;font-weight:600}.overlay.compact .tag span,.overlay.compact .tag em{display:none}
+.overlay .tag em{font-style:normal}
+.controls{display:flex;flex-wrap:wrap;gap:10px 20px;align-items:center;background:var(--panel);border:1px solid var(--line);border-radius:10px;padding:10px 14px}
+.ctl{display:flex;flex-wrap:wrap;gap:6px 8px;align-items:center}
+.ctl-label{font-size:12px;color:var(--muted)}
+.seg{display:flex;flex-wrap:wrap;gap:4px}
+.seg button,.ctl>button{font:inherit;font-size:13px;color:var(--ink);background:var(--panel);border:1px solid var(--line);border-radius:999px;padding:2px 11px;cursor:pointer}
+.seg button.num{min-width:2.4em;padding-inline:6px;border-top:2px solid var(--tone)}
+.seg button[aria-pressed="true"],.ctl>button[aria-pressed="true"]{background:var(--accent-soft);border-color:var(--accent);color:var(--accent)}
+.ctl input[type=range]{width:180px}
+.ctl output{font-family:var(--mono);font-size:12px;min-width:5em}
+.toggle{font-size:13px;color:var(--muted);display:flex;gap:4px;align-items:center}
+.result{flex-basis:100%;font-size:13px;color:var(--muted)}
+.cards{display:grid;grid-template-columns:repeat(auto-fill,minmax(min(100%,400px),1fr));gap:12px}
+.cards h2.group{grid-column:1/-1;margin:8px 0 -2px;font-size:16px}
+.cards p.group-note{grid-column:1/-1;margin:0;font-size:13px;color:var(--muted);max-width:140ch}
+.card{background:var(--panel);border:1px solid var(--line);border-radius:10px;padding:12px 14px;min-width:0}
+.card h3{margin:0 0 2px;font-size:15px;line-height:1.35;text-wrap:balance}
+.card .sub{margin:0 0 8px;font-size:12px;color:var(--muted)}
+.card.unit{border-top:3px solid var(--tone);cursor:pointer}
+.card.unit[aria-current="true"]{box-shadow:0 0 0 2px var(--accent)}
+dl.kv{display:grid;grid-template-columns:5.2em minmax(0,1fr);gap:4px 10px;margin:0;font-size:13px}
+dl.kv dt{color:var(--muted)}dl.kv dd{margin:0;font-variant-numeric:tabular-nums;overflow-wrap:anywhere}
+.note{font-size:12px;color:var(--faint);margin:8px 0 0}
+#notes h2{margin:0 0 4px;font-size:15px}
+#notes p,#notes li{font-size:13px;color:var(--muted);max-width:120ch}
+#notes ul{padding-left:1.2em;margin:6px 0}
+@media (prefers-reduced-motion:reduce){*{transition:none!important}}
+</style>
+<script type="importmap">{"imports":{"three":"./vendor/three.module.js"}}</script>
+</head>
+<body>
+<header class="top">
+  <h1>宇树和其他品牌的夹爪、灵巧手</h1>
+  <p>20 款末端按同一比例分三排：宇树的六款（两款夹爪、四款灵巧手），国内其他厂家的八款灵巧手，国外的六款。模型都是厂家自己公开的 URDF 或 MuJoCo 模型和网格，都是右手。拖动「开合」看手指怎么动；点「宇树」「国内」「国外」单看一排，点编号、卡片或模型本身单看一款。地面每小格 10 mm，每大格 50 mm。</p>
+</header>
+<main>
+  <div class="stage" id="stage">
+    <canvas id="c3d" aria-label="20 款夹爪和灵巧手分三排的 3D 视图：宇树六款，国内其他厂家八款，国外六款"></canvas>
+    <div class="overlay" id="overlay"></div>
+    <div class="stage-note" id="stage-note">正在载入网格…</div>
+  </div>
+  <div class="controls">
+    <div class="ctl"><span class="ctl-label">开合</span><input type="range" id="grip" min="0" max="100" step="1" value="0" aria-label="手指从张开（0）到合拢（100）"><output id="grip-out"></output><button type="button" id="play" aria-pressed="false">来回开合</button></div>
+    <div class="ctl"><span class="ctl-label">视角</span><div class="seg" id="focus" role="group" aria-label="看哪一排、哪一款"></div></div>
+    <div class="ctl"><label class="toggle"><input type="checkbox" id="shadows" checked>阴影</label><label class="toggle" title="用 RoomEnvironment 做反射，金属件更真实；这台机器上要多等几秒"><input type="checkbox" id="env" checked>环境反射</label></div>
+    <div class="result" id="result">正在载入…</div>
+  </div>
+  <section class="cards" id="cards" aria-label="20 款末端的数据"></section>
+  <section class="card" id="notes"></section>
+</main>
+<script type="module">
+import {GRIPPERS,UNITREE_OTHERS,SOURCES,OTHER_HANDS,HAND_SOURCES} from './ends_data.mjs';
+
+const $=id=>document.getElementById(id),esc=s=>String(s).replace(/[&<>"]/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c]));
+const gripper=id=>GRIPPERS.find(x=>x.id===id),other=model=>UNITREE_OTHERS.find(x=>x.model===model),hand=id=>OTHER_HANDS.find(x=>x.id===id);
+const wan=n=>n>=1e4?`${(n/1e4).toFixed(1)} 万`:String(n),PI=Math.PI;   // followed by 个 with no space
+const F4=['index','middle','ring','pinky'];
+const fill=(names,f)=>Object.assign({},...names.map(f));
+const GROUPS=[{id:'unitree',name:'宇树',full:'宇树'},{id:'cn',name:'国内',full:'国内其他厂家'},{id:'intl',name:'国外',full:'国外厂家'}];
+// Each end: how it stands (the model's direction toward its fingertips goes up, the side its fingers close toward
+// faces the viewer), its open and closed poses (a joint not named stays at 0, and mimic or linkage joints follow the
+// joint that drives them; "closed" is a grasp chosen here, not a pose the maker gives), and the look of each class
+// of triangles the mesh scripts sorted. The dynamic imports name each module in full.
+const UNITREE=[
+  {id:'dex1_1',name:'Dex1-1',kind:'两指平行夹爪',dof:'两指同步，1 个电机',spec:gripper('dex1'),tone:'--tone-1',
+   load:()=>import('./unitree_ends_mesh/dex1_1.mjs'),up:[1,0,0],front:[0,0,1],
+   open:{Dex1_finger_joint_1:.041,Dex1_finger_joint_2:.041},closed:{Dex1_finger_joint_1:.001,Dex1_finger_joint_2:.001},
+   look:{body:'black',metal:'steel',pad:'rubber'}},
+  {id:'z1',name:'Z1 夹爪',kind:'一爪固定、一爪转动',dof:'1 个关节（动爪）',spec:gripper('z1g'),tone:'--tone-2',
+   load:()=>import('./unitree_ends_mesh/z1.mjs'),up:[1,0,0],front:[0,1,0],
+   open:{jointGripper:-PI/2},closed:{jointGripper:0},look:{body:'black'}},
+  {id:'dex2_5',name:'Dex2/5',kind:'五指手',spec:other('Dex2/5'),tone:'--tone-3',
+   load:()=>import('./unitree_ends_mesh/dex2_5.mjs'),up:[1,0,0],front:[0,1,0],
+   closed:{right_11_joint:-.6,right_12_joint:-1.1,right_21_joint:1.2,right_22_joint:1.3,right_31_joint:1.2,right_32_joint:1.3,right_41_joint:1.2,right_42_joint:1.3,right_51_joint:1.2,right_52_joint:1.3},
+   look:{body:'black',metal:'silver'}},
+  {id:'dex3_1',name:'Dex3-1',kind:'三指灵巧手',spec:other('Dex3-1'),tone:'--tone-4',
+   load:()=>import('./unitree_ends_mesh/dex3_1.mjs'),up:[1,0,0],front:[0,1,0],
+   closed:{right_hand_index_0_joint:1.2,right_hand_index_1_joint:1.2,right_hand_middle_0_joint:1.2,right_hand_middle_1_joint:1.2,right_hand_thumb_1_joint:-.8,right_hand_thumb_2_joint:-1.2},
+   look:{body:'black'}},
+  {id:'dex5_1',name:'Dex5-1',kind:'五指灵巧手',spec:other('Dex5-1 / Dex5-1P'),tone:'--tone-5',
+   load:()=>import('./unitree_ends_mesh/dex5_1.mjs'),up:[0,1,0],front:[0,0,1],
+   closed:{Yaw_11R:.3,Roll_12R:1,Pitch_13R:.6,Pitch_14R:.6,Pitch_22R:1.2,Pitch_23R:1.3,Pitch_24R:1,Pitch_32R:1.2,Pitch_33R:1.3,Pitch_34R:1,Pitch_42R:1.2,Pitch_43R:1.3,Pitch_44R:1,Pitch_52R:1.2,Pitch_53R:1.3,Pitch_54R:1},
+   look:{body:'black',finger:'graphite'}},
+  {id:'dex5_s',name:'Dex5-S',kind:'五指灵巧手',spec:other('Dex5-S / Dex5-S Pro'),tone:'--tone-6',
+   load:()=>import('./unitree_ends_mesh/dex5_s.mjs'),up:[0,1,0],front:[0,0,1],
+   closed:Object.assign({'right_thumb_pitch_joint':-1,'right_thumb_roll_joint':-.6,'right_thumb_yaw1_joint':.5,'right_thumb_yaw2_joint':-.8,'right_thumb_yaw3_joint':-.8,'right_little-finger_roll1_joint':-1.2,'right_little-finger_roll2_joint':-1.2,'right_little-finger_roll3_joint':-1},
+     ...['index','middle','ring'].map(f=>({[`right_${f}-finger_roll1_joint`]:1.2,[`right_${f}-finger_roll2_joint`]:-1.2,[`right_${f}-finger_roll3_joint`]:-1}))),
+   look:{body:'silver',silicone:'rubber'}}
+].map(e=>({...e,group:'unitree',brand:'宇树'}));
+const OTHERS=[
+  {id:'inspire_rh56dfx',name:'RH56DFX',load:()=>import('./other_hands_mesh/inspire_rh56dfx.mjs'),up:[0,-1,0],front:[-1,0,0],
+   closed:{R_thumb_proximal_yaw_joint:1.1,R_thumb_proximal_pitch_joint:.4,...fill(F4,f=>({[`R_${f}_proximal_joint`]:1.4}))},look:{palm:'white',finger:'black'}},
+  {id:'linker_l20',name:'L20',load:()=>import('./other_hands_mesh/linker_l20.mjs'),up:[0,0,1],front:[1,0,0],
+   closed:{thumb_cmc_yaw:1,thumb_cmc_roll:.9,thumb_cmc_pitch:.5,thumb_mcp:.6,...fill(F4,f=>({[`${f}_mcp_pitch`]:1.1,[`${f}_pip`]:1.2}))},look:{dark:'graphite',mid:'aluminium',light:'white'}},
+  {id:'linker_o6',name:'O6',load:()=>import('./other_hands_mesh/linker_o6.mjs'),up:[0,0,1],front:[1,0,0],
+   closed:{rh_thumb_cmc_yaw:1,rh_thumb_cmc_pitch:.5,...fill(F4,f=>({[`rh_${f}_mcp_pitch`]:1.3}))},look:{dark:'black',mid:'aluminium',light:'white'}},
+  {id:'brainco_revo2',name:'Revo2',load:()=>import('./other_hands_mesh/brainco_revo2.mjs'),up:[0,0,1],front:[1,0,0],
+   closed:{right_thumb_metacarpal_joint:1.2,right_thumb_proximal_joint:.8,...fill(F4,f=>({[`right_${f}_proximal_joint`]:1.15}))},look:{body:'white'}},
+  {id:'oymotion_rohand',name:'ROHand',load:()=>import('./other_hands_mesh/oymotion_rohand.mjs'),up:[-1,0,0],front:[0,0,-1],
+   closed:{th_root_link:1.2,th_slider_link:.008,...fill(['if','mf','rf','lf'],f=>({[`${f}_slider_link`]:.016}))},look:{body:'white'}},
+  {id:'dexrobot_dexhand021',name:'DexHand021',load:()=>import('./other_hands_mesh/dexrobot_dexhand021.mjs'),up:[0,0,1],front:[1,0,0],
+   closed:{r_f_joint1_1:1.4,r_f_joint1_2:.6,r_f_joint1_3:.5,r_f_joint1_4:.5,...fill([2,3,4,5],k=>({[`r_f_joint${k}_2`]:1.1,[`r_f_joint${k}_3`]:1.1,[`r_f_joint${k}_4`]:.9}))},look:{dark:'black',mid:'graphite',light:'white'}},
+  {id:'wuji_hand',name:'Wuji Hand 2.1',load:()=>import('./other_hands_mesh/wuji_hand.mjs'),up:[0,0,-1],front:[0,1,0],
+   closed:{r_thumb_cmc_flex:.8,r_thumb_cmc_abd:.6,r_thumb_mcp:.6,r_thumb_ip:.6,...fill(['index_finger','middle_finger','ring_finger','pinky'],f=>({[`r_${f}_mcp_flex`]:1.1,[`r_${f}_pip`]:1.2,[`r_${f}_dip`]:.9}))},look:{dark:'black',mid:'aluminium',light:'aluminium'}},
+  {id:'robotera_xhand1',name:'XHAND1 Pro-U',load:()=>import('./other_hands_mesh/robotera_xhand1.mjs'),up:[0,0,1],front:[1,0,0],
+   closed:{right_hand_thumb_mcp0_joint:1.2,right_hand_thumb_mcp1_joint:.6,right_hand_thumb_pip_joint:.6,...fill(['index','mid','ring','pinky'],f=>({[`right_hand_${f}_mcp1_joint`]:1.2,[`right_hand_${f}_pip_joint`]:.8,[`right_hand_${f}_dip_joint`]:1}))},look:{body:'black',cover:'graphite'}},
+  {id:'sharpa_wave',name:'SharpaWave',load:()=>import('./other_hands_mesh/sharpa_wave.mjs'),up:[0,0,1],front:[1,0,0],
+   closed:{right_thumb_CMC_FE:1.2,right_thumb_MCP_FE:.6,right_thumb_IP:.6,...fill(F4,f=>({[`right_${f}_MCP_FE`]:1.2,[`right_${f}_PIP`]:1.2,[`right_${f}_DIP`]:.9}))},look:{body:'lightgrey',pad:'rubber'}},
+  {id:'shadow_hand',name:'Shadow Hand',load:()=>import('./other_hands_mesh/shadow_hand.mjs'),up:[0,0,1],front:[1,0,0],
+   closed:{rh_THJ5:.5,rh_THJ4:1.1,rh_THJ2:.3,rh_THJ1:.6,...fill(['FF','MF','RF','LF'],f=>({[`rh_${f}J3`]:1.2,[`rh_${f}J2`]:1.2,[`rh_${f}J1`]:.9}))},look:{dark:'black',mid:'graphite',light:'silver'}},
+  {id:'allegro_v5',name:'Allegro V5',load:()=>import('./other_hands_mesh/allegro_v5.mjs'),up:[0,0,1],front:[1,0,0],
+   closed:{joint_12_0:1.3,joint_13_0:.4,joint_14_0:.6,joint_15_0:.8,...fill([0,4,8],b=>({[`joint_${b+1}_0`]:1.2,[`joint_${b+2}_0`]:1.2,[`joint_${b+3}_0`]:1}))},look:{dark:'black',mid:'graphite',light:'white'}},
+  {id:'leap_hand',name:'LEAP Hand',load:()=>import('./other_hands_mesh/leap_hand.mjs'),up:[1,0,0],front:[0,0,-1],
+   closed:{12:1.2,13:.4,14:.6,15:.8,...fill([0,4,8],b=>({[b+1]:1.2,[b+2]:1.2,[b+3]:1}))},look:{motor:'black',printed:'white'}},
+  {id:'ability_hand',name:'Ability Hand',load:()=>import('./other_hands_mesh/ability_hand.mjs'),up:[0,0,1],front:[0,1,0],
+   closed:{thumb_q1:-1.2,thumb_q2:1,...fill(F4,f=>({[`${f}_q1`]:1.3}))},look:{body:'graphite'}},
+  {id:'tesollo_dg5f',name:'DG-5F',load:()=>import('./other_hands_mesh/tesollo_dg5f.mjs'),up:[0,0,1],front:[1,0,0],
+   closed:{joint_1_1:.8,joint_1_2:-1.5,joint_1_3:.5,joint_1_4:.5,...fill([2,3,4,5],k=>({[`joint_${k}_2`]:1.2,[`joint_${k}_3`]:1.2,[`joint_${k}_4`]:.9}))},look:{dark:'graphite',mid:'silver',light:'white'}}
+].map(e=>{const s=hand(e.id);return {...e,spec:s,group:s.group,brand:s.maker,kind:s.kind,dof:s.dof,tone:s.group==='cn'?'--tone-cn':'--tone-intl'};});
+const ENDS=[...UNITREE,...OTHERS.filter(e=>e.group==='cn'),...OTHERS.filter(e=>e.group==='intl')];
+const num=e=>ENDS.indexOf(e)+1,label=e=>e.group==='unitree'?`宇树 ${e.name}`:`${e.brand} ${e.name}`;
+
+const S={t:0,play:false,focus:'all',shadows:true,env:true};
+try{const s=JSON.parse(localStorage.getItem('unitree-ends-3d')||'{}');if(s.focus)S.focus=s.focus;for(const k of ['shadows','env'])if(typeof s[k]==='boolean')S[k]=s[k];}catch{}
+const remember=()=>{try{localStorage.setItem('unitree-ends-3d',JSON.stringify({focus:S.focus,shadows:S.shadows,env:S.env}));}catch{}};
+// A link may open on a row or one end, a grip and the motion: ?focus=cn, ?focus=wuji_hand&grip=60&play=1.
+{const p=new URLSearchParams(location.search);if(p.get('focus'))S.focus=p.get('focus');if(p.has('grip'))S.t=Math.max(0,Math.min(1,Number(p.get('grip'))/100||0));S.play=p.get('play')==='1';}
+if(S.focus!=='all'&&!ENDS.some(e=>e.id===S.focus)&&!GROUPS.some(g=>g.id===S.focus))S.focus='all';
+const DATA={};   // id → the module's END once loaded
+// Which row a focus shows: all of them, one row, or the row of one end.
+const rowOf=focus=>focus==='all'?null:GROUPS.some(g=>g.id===focus)?focus:ENDS.find(e=>e.id===focus)?.group;
+
+// ---------- controls ----------
+function renderControls(){
+  const b=(k,t,title,extra='')=>`<button type="button" data-v="${k}" aria-pressed="${S.focus===k}" title="${esc(title)}"${extra}>${t}</button>`;
+  $('focus').innerHTML=b('all','全部',`全部 ${ENDS.length} 款`)+GROUPS.map(g=>b(g.id,g.name,g.full)).join('')+
+    ENDS.map(e=>b(e.id,num(e),label(e),` class="num" style="--tone:var(${e.tone})"`)).join('');
+  $('grip').value=Math.round(S.t*100);gripText();$('shadows').checked=S.shadows;$('env').checked=S.env;$('play').setAttribute('aria-pressed',String(S.play));
+}
+function gripText(){const v=Math.round(S.t*100);$('grip-out').textContent=v===0?'张开':v===100?'合拢':`${v}%`;}
+const press=()=>{$('focus').querySelectorAll('button').forEach(b=>b.setAttribute('aria-pressed',String(b.dataset.v===S.focus)));document.querySelectorAll('.card.unit').forEach(c=>c.setAttribute('aria-current',String(c.dataset.id===S.focus)));};
+function setFocus(id){S.focus=id;press();remember();V?.focus();}
+$('focus').addEventListener('click',e=>{const b=e.target.closest('button');if(b)setFocus(b.dataset.v);});
+$('cards').addEventListener('click',e=>{const c=e.target.closest('.card.unit');if(c&&!e.target.closest('a'))setFocus(S.focus===c.dataset.id?'all':c.dataset.id);});
+$('grip').addEventListener('input',e=>{S.t=Number(e.target.value)/100;gripText();if(S.play){S.play=false;$('play').setAttribute('aria-pressed','false');}V?.pose();});
+$('play').addEventListener('click',()=>{S.play=!S.play;$('play').setAttribute('aria-pressed',String(S.play));if(S.play)V?.animate();});
+for(const k of ['shadows','env'])$(k).addEventListener('change',e=>{S[k]=e.target.checked;remember();V?.applyLook();});
+
+// ---------- cards ----------
+const link=(s,k)=>s?`<a href="${esc(s.url)}" target="_blank" rel="noopener">${esc(s.title)}</a>`:esc(k);
+const kg=x=>`${+x.toFixed(3)} kg`;
+function meshText(e,D){
+  if(!D)return '正在载入…';
+  const how=D.err?`边折叠简化到 ${wan(D.triangles)}个（形状误差 ≤ ${+(D.err*1000).toFixed(2)} mm）`:`简化到 ${wan(D.triangles)}个（${+(D.cell*1000).toFixed(2)} mm 格子）`;
+  const repo=D.source.repo,lic=D.source.license;
+  return `<a href="https://github.com/${esc(repo)}/tree/${esc(D.source.commit)}/${esc(D.source.path==='.'?'':D.source.path)}" target="_blank" rel="noopener">${esc(repo)}</a> ${esc(D.source.commit.slice(0,7))}（${lic?esc(lic):'没写许可证'}）；原网格 ${wan(D.trianglesSource)}个三角形，${how}`;
+}
+function unitreeCard(e){
+  const s=e.spec,D=DATA[e.id],m=V?.measure(e.id),isG=!!s.maker;
+  const size=isG?`官网长 ${s.length} mm、宽 ${s.width} mm`:`官网 ${esc(s.size)}`;
+  const meas=m?`；网格量得（张开）长 ${m[0]} × 宽 ${m[1]} × 厚 ${m[2]} mm`:'';
+  const grip=isG?(s.force?`夹力 ${s.force.join('–')} N`:`夹力（N）${esc(s.forceText)}`)+(s.stroke?`，行程 ${s.stroke} mm`:s.opening?`，${esc(s.opening)}`:''):`负载 ${esc(s.load)}`;
+  const power=isG?`${esc(s.supply)}；${esc(s.bus)}`:esc(s.power);
+  return `<article class="card unit" data-id="${e.id}" style="--tone:var(${e.tone})" aria-current="${S.focus===e.id}"><h3>${num(e)} · 宇树 ${esc(e.name)}</h3>
+    <p class="sub">${esc(e.kind)} · ${esc(e.dof??s.dof)}</p><dl class="kv">
+    <dt>质量</dt><dd>官网 ${s.mass} kg${D?`；URDF 各件合计 ${D.mass.toFixed(3)} kg`:''}</dd>
+    <dt>外形</dt><dd>${size}${meas}</dd>
+    <dt>${isG?'夹持':'负载'}</dt><dd>${grip}</dd>
+    <dt>供电通信</dt><dd>${power}</dd>
+    <dt>网格</dt><dd>${meshText(e,D)}</dd></dl>
+    <p class="note">出处：${[s.src].flat().map(k=>link(SOURCES[k],k)).join('；')}</p></article>`;
+}
+function otherCard(e){
+  const s=e.spec,D=DATA[e.id],m=V?.measure(e.id);
+  const mass=(s.mass!=null?`官网 ${esc(s.massText??kg(s.mass))}`:'没查到厂家的数')+(D?`；URDF 各件合计 ${D.mass.toFixed(3)} kg`:'');
+  const size=(s.size?`官网 ${esc(s.size)}`:'')+(m?`${s.size?'；':''}网格量得（张开）长 ${m[0]} × 宽 ${m[1]} × 厚 ${m[2]} mm`:'');
+  return `<article class="card unit" data-id="${e.id}" style="--tone:var(${e.tone})" aria-current="${S.focus===e.id}"><h3>${num(e)} · ${esc(s.maker)} ${esc(s.model)}</h3>
+    <p class="sub">${esc(s.makerEn)} · ${esc(s.kind)} · ${esc(s.dof)}</p><dl class="kv">
+    <dt>质量</dt><dd>${mass}</dd>
+    <dt>外形</dt><dd>${size||'—'}</dd>
+    <dt>负载</dt><dd>${esc(s.load)}</dd>
+    <dt>供电通信</dt><dd>${esc(s.power)}</dd>
+    <dt>说明</dt><dd>${esc(s.note)}</dd>
+    <dt>模型</dt><dd>${meshText(e,D)}</dd></dl>
+    <p class="note">出处：${s.src.map(k=>link(HAND_SOURCES[k],k)).join('；')}</p></article>`;
+}
+const GROUP_NOTE={unitree:'宇树在 unitree_ros 公开的 URDF 和网格（BSD-3-Clause）。',
+  cn:'国内其他厂家：模型取自各厂家的 GitHub 仓库（因时的取自宇树 xr_teleoperate）；参数取自厂家官网、手册或论文。',
+  intl:'国外厂家：Shadow 的模型取自 MuJoCo Menagerie（Shadow 提供），其余取自厂家或作者的仓库。'};
+function renderCards(){
+  $('cards').innerHTML=GROUPS.map(g=>`<h2 class="group">${esc(g.full)}（${ENDS.filter(e=>e.group===g.id).length} 款）</h2><p class="group-note">${esc(GROUP_NOTE[g.id])}</p>`+
+    ENDS.filter(e=>e.group===g.id).map(e=>e.group==='unitree'?unitreeCard(e):otherCard(e)).join('')).join('');
+}
+const range=(es,f)=>{const v=es.map(e=>DATA[e.id]).filter(Boolean).map(f);return v.length?`${+Math.min(...v).toFixed(2)}–${+Math.max(...v).toFixed(2)}`:'';};
+function renderNotes(){
+  const d1=other('D1-T 机械臂');
+  $('notes').innerHTML=`<h2>怎么画的</h2><ul>
+  <li><b>宇树</b>：网格和关节来自宇树公开的 unitree_ros 仓库（BSD-3-Clause）。Dex1-1 用提交 8927c58，其余用 157ff95（2026-11-13）。Z1 夹爪没有单独的 URDF，取自 Z1 机械臂 xacro 里装夹爪的那一段。网格按 ${range(UNITREE,D=>D.cell*1000)||'0.3–0.7'} mm 的格子合并顶点，外形误差在半格以内。</li>
+  <li><b>其他品牌</b>：${OTHERS.length} 款都用厂家（或作者）自己在 GitHub 公开的 URDF 或 MuJoCo 模型，钉在下载时的提交上，每个文件都和 git 的哈希核对过。许可证各不相同（卡片上写了），都是 Apache-2.0、MIT 或 BSD，全文在本站仓库的 <a href="https://github.com/tony1213/robot-hands-3d/tree/main/LICENSES" target="_blank" rel="noopener">LICENSES</a> 里。因时官网只给 STEP（RAR 压缩包），这里用宇树 xr_teleoperate 里的因时手模型。</li>
+  <li><b>简化</b>：其他品牌的网格先在 0.02 mm 的格子上焊接顶点，再用边折叠（Garland–Heckbert 二次误差）简化，形状偏差不超过 0.2 mm；平面上的三角形合并得多，曲面和棱边保留。${OTHERS.length} 款原网格合计约 ${wan(OTHERS.reduce((a,e)=>a+(DATA[e.id]?.trianglesSource??0),0))}个三角形，简化后约 ${wan(OTHERS.reduce((a,e)=>a+(DATA[e.id]?.triangles??0),0))}个。</li>
+  <li><b>关节</b>：按模型里的原点、轴和限位动；URDF 写了随动（mimic）的关节跟着主动关节走。傲意 ROHand 的手指是连杆，URDF 表达不了闭环，这里按傲意自己的连杆公式（FingerMathURDF.py）由滑块位置算出各关节。「合拢」是这里选的一个握持姿态，不是厂家给的；没写随动关系的耦合关节（如 Shadow 的指尖、星动纪元的远端指节）按大致比例一起动。</li>
+  <li><b>颜色</b>：有材质色的模型（Tesollo 的网格、Allegro、灵心巧手、Shadow 等）按模型的颜色；因时按官网照片（白色掌心、黑色手指）；其余没有可用颜色的按官网照片近似。</li>
+  <li><b>立柱</b>：每款立在一根小立柱上，最低那一面（多数是手腕法兰，LEAP 是掌根的边）的中心对准立柱。不按模型根连杆的原点对：宇树 Dex5-1 的原点在拇指根部，离法兰中心 27 mm；Allegro、LEAP 的原点也不在法兰中心。</li>
+  <li><b>质量</b>：卡片上同时写官网的数和 URDF 各连杆相加的数，两者常不一致（如灵心巧手 L20：URDF 0.2 kg，官网约 1.2 kg；因时：URDF 0.19 kg，官网 0.54 kg），以官网为准。Shadow 的 4.3 kg 含装电机的前臂。</li>
+  <li><b>没画的</b>：宇树 D1-T 和 D2 机械臂带的夹爪（${esc(d1.note)}。D1-T 没有公开的模型；<a href="https://github.com/unitreerobotics/D2-Arm" target="_blank" rel="noopener">D2-Arm 仓库</a>里夹爪是一块不动的整体，也没写许可证）；帕西尼 DexH13 和星动纪元标准版 XHAND1（没有厂家公开的模型，只有第三方仓库里的副本）；智元 OmniHand 2025（仓库没写许可证）和傅利叶 FDH-6（模型是 GPL-3.0：转发简化后的网格，要连同全部源文件和生成脚本按 GPL 一起公开）没有收进公开版；SCHUNK SVH（模型是要展开的 xacro 宏）、Shadow DEX-EE（三指）、TetherIA Aero Hand（开源手）这一版没画。</li>
+  <li><b>本站</b>：页面、简化后的网格和各家的许可证都在 GitHub 仓库 <a href="https://github.com/tony1213/robot-hands-3d" target="_blank" rel="noopener">tony1213/robot-hands-3d</a>。</li></ul>`;
+}
+function renderResult(){
+  const done=ENDS.filter(e=>DATA[e.id]);
+  $('result').textContent=done.length<ENDS.length?`已载入 ${done.length} / ${ENDS.length} 款…`:`${ENDS.length} 款共 ${wan(done.reduce((a,e)=>a+DATA[e.id].triangles,0))}个三角形。左键拖动旋转，滚轮缩放，右键拖动平移；点模型单独看一款，再点空白处回到全部。`;
+}
+
+// ---------- 3D ----------
+let V=null;
+async function load3D(){
+  const note=$('stage-note');
+  try{
+    const [T,{OrbitControls},{RoomEnvironment}]=await Promise.all([import('three'),import('./vendor/OrbitControls.js'),import('./vendor/RoomEnvironment.js')]);
+    V=createView(T,OrbitControls,RoomEnvironment);globalThis.UNITREE_ENDS=V;
+    const failed=[];
+    await Promise.all(ENDS.map(async e=>{
+      try{const {END}=await e.load();DATA[e.id]=END;V.add(e,END);}catch(err){console.error('[ends]',e.id,err);failed.push(label(e));}
+      note.textContent=`正在载入网格：${Object.keys(DATA).length} / ${ENDS.length}…`;renderResult();
+    }));
+    renderCards();renderNotes();
+    note.textContent='正在编译着色器…';await V.ready();
+    if(failed.length){note.textContent=`${failed.join('、')} 的网格没能载入，其余照常。`;}
+    else if(S.env){note.textContent='正在生成环境反射…';setTimeout(()=>{V.applyLook();note.hidden=true;},30);}
+    else note.hidden=true;
+    if(S.play)V.animate();
+  }catch(err){console.error('[ends] 3D 载入失败',err);note.textContent=`3D 视图没能载入：${err?.message||err}。下面的数据不受影响。`;}
+}
+function createView(T,OrbitControls,RoomEnvironment){
+  const canvas=$('c3d'),stage=$('stage'),overlay=$('overlay'),css=getComputedStyle(document.documentElement),color=k=>new T.Color(css.getPropertyValue(k).trim()||'#888888');
+  const renderer=new T.WebGLRenderer({canvas,antialias:true});renderer.setPixelRatio(Math.min(devicePixelRatio,2));renderer.outputColorSpace=T.SRGBColorSpace;
+  renderer.toneMapping=T.ACESFilmicToneMapping;renderer.toneMappingExposure=1.05;renderer.shadowMap.enabled=true;renderer.shadowMap.type=T.PCFShadowMap;
+  const scene=new T.Scene();scene.background=color('--stage');
+  const hemi=new T.HemisphereLight(0xffffff,0x9a8f84,1.0),key=new T.DirectionalLight(0xfff6ec,2.2),fill=new T.DirectionalLight(0xdfe8f2,.7),rim=new T.DirectionalLight(0xffffff,.6);
+  const KEY=new T.Vector3(-.7,2.1,1.5).normalize();
+  key.position.copy(KEY).multiplyScalar(3);fill.position.set(1.8,1.2,1.4);rim.position.set(.3,1.6,-2.2);scene.add(hemi,key,fill,rim,key.target);
+  key.castShadow=true;key.shadow.mapSize.set(2048,2048);key.shadow.bias=-.0003;key.shadow.normalBias=.002;key.shadow.radius=3;
+  // Rows front to back: Unitree's, other Chinese makers', makers abroad (the tallest, Shadow's with its forearm, last).
+  const SP=.27,ROW={unitree:.62,cn:0,intl:-.62},POST=.045;
+  const rowEnds=g=>ENDS.filter(e=>e.group===g),X=e=>{const r=rowEnds(e.group);return (r.indexOf(e)-(r.length-1)/2)*SP;};
+  // The floor: 10 mm squares, every fifth line darker (one 50 mm tile of a canvas texture, repeated).
+  const tile=document.createElement('canvas');tile.width=tile.height=250;const c2=tile.getContext('2d');
+  c2.fillStyle=css.getPropertyValue('--floor').trim()||'#e1e5e9';c2.fillRect(0,0,250,250);c2.fillStyle=css.getPropertyValue('--grid-minor').trim()||'#d3d8de';
+  for(let i=1;i<5;i++){c2.fillRect(i*50-2,0,4,250);c2.fillRect(0,i*50-2,250,4);}
+  c2.fillStyle=css.getPropertyValue('--grid-major').trim()||'#bcc3cb';c2.fillRect(0,0,8,250);c2.fillRect(0,0,250,8);
+  const grid=new T.CanvasTexture(tile);grid.colorSpace=T.SRGBColorSpace;grid.wrapS=grid.wrapT=T.RepeatWrapping;grid.anisotropy=renderer.capabilities.getMaxAnisotropy();
+  const FW=3.4,FD=2.3;grid.repeat.set(FW/.05,FD/.05);
+  const floor=new T.Mesh(new T.PlaneGeometry(FW,FD),new T.MeshStandardMaterial({map:grid,roughness:.95,metalness:0}));floor.rotation.x=-PI/2;floor.receiveShadow=true;scene.add(floor);
+  const camera=new T.PerspectiveCamera(30,1,.02,30),controls=new OrbitControls(camera,canvas);controls.enableDamping=false;controls.maxPolarAngle=PI*.495;controls.minDistance=.12;controls.maxDistance=8;
+  let needs=false;
+  function render(){if(needs)return;needs=true;requestAnimationFrame(()=>{needs=false;renderer.render(scene,camera);placeLabels();});}
+  controls.addEventListener('change',render);
+  new ResizeObserver(()=>{const w=stage.clientWidth,h=stage.clientHeight;if(!w||!h)return;renderer.setSize(w,h,false);camera.aspect=w/h;camera.updateProjectionMatrix();compact();render();}).observe(stage);
+  // Shared materials: one shader program for everything, compiled once.
+  const LOOK={black:{color:0x26282c,roughness:.5,metalness:.2},graphite:{color:0x3b3e43,roughness:.48,metalness:.25},steel:{color:0xb6bcc3,roughness:.3,metalness:.85},
+    silver:{color:0xc4c8ce,roughness:.36,metalness:.65},aluminium:{color:0xb9bec5,roughness:.4,metalness:.6},white:{color:0xe6e8eb,roughness:.5,metalness:0},lightgrey:{color:0xc8ccd1,roughness:.55,metalness:.05},
+    rubber:{color:0x35383d,roughness:.85,metalness:0},stand:{color:color('--stand'),roughness:.6,metalness:.3},plate:{color:color('--plate'),roughness:.75,metalness:0}};
+  const mats=Object.fromEntries(Object.entries(LOOK).map(([k,v])=>[k,new T.MeshStandardMaterial(v)]));
+  const b64=s=>{const bin=atob(s),u=new Uint8Array(bin.length);for(let i=0;i<bin.length;i++)u[i]=bin.charCodeAt(i);return u;};
+  // Positions stay int16 on the GPU; each mesh is scaled by the module's unit.
+  function geometryOf(m){
+    const g=new T.BufferGeometry(),idx=b64(m.index);
+    g.setAttribute('position',new T.BufferAttribute(new Int16Array(b64(m.position).buffer),3));
+    g.setAttribute('normal',new T.BufferAttribute(new Int8Array(b64(m.normal).buffer),3,true));
+    g.setIndex(new T.BufferAttribute(m.index32?new Uint32Array(idx.buffer):new Uint16Array(idx.buffer),1));
+    m.groups.forEach(([,start,count],k)=>g.addGroup(start,count,k));
+    g.computeBoundingBox();g.computeBoundingSphere();return g;
+  }
+  const units=[],labels=[],v3=new T.Vector3();
+  function placeLabels(){
+    const w=stage.clientWidth;
+    for(const l of labels){if(!l.u.slot.visible){l.el.style.visibility='hidden';continue;}v3.copy(l.pos).project(camera);const off=v3.z>1||v3.z<-1||Math.abs(v3.x)>1.05||Math.abs(v3.y)>1.05;l.el.style.visibility=off?'hidden':'';if(off)continue;
+      l.el.style.transform=`translate(${(v3.x+1)/2*w}px,${(1-v3.y)/2*stage.clientHeight}px) translate(-50%,-100%)`;}
+  }
+  function add(e,E){
+    const slot=new T.Group();slot.position.set(X(e),0,ROW[e.group]);scene.add(slot);
+    // A round plate on the floor and a post: the hand stands on it as on a wrist.
+    const plate=new T.Mesh(new T.CylinderGeometry(.08,.08,.006,64),mats.plate);plate.position.y=.003;
+    const post=new T.Mesh(new T.CylinderGeometry(.022,.022,POST-.006,40),mats.stand);post.position.y=.006+(POST-.006)/2;
+    slot.add(plate,post);
+    const holder=new T.Group(),U=new T.Vector3(...e.up),F=new T.Vector3(...e.front),R=new T.Vector3().crossVectors(U,F);
+    holder.quaternion.setFromRotationMatrix(new T.Matrix4().set(R.x,R.y,R.z,0,U.x,U.y,U.z,0,F.x,F.y,F.z,0,0,0,0,1));slot.add(holder);
+    const links=new Map(E.links.map(l=>{const o=new T.Group();o.name=l.name;return [l.name,o];}));
+    const children=new Set(E.joints.map(j=>j.child)),joints=[];
+    for(const j of E.joints){
+      const frame=new T.Group(),motion=new T.Group();frame.position.fromArray(j.xyz);frame.quaternion.setFromEuler(new T.Euler(j.rpy[0],j.rpy[1],j.rpy[2],'ZYX'));
+      frame.add(motion);motion.add(links.get(j.child));links.get(j.parent).add(frame);
+      if(j.type!=='fixed')joints.push({j,motion,axis:new T.Vector3().fromArray(j.axis).normalize()});
+    }
+    const root=links.get(E.links.find(l=>!children.has(l.name)).name);holder.add(root);
+    const geos=E.meshes.map(geometryOf);
+    for(const vis of E.visuals){
+      const m=E.meshes[vis.mesh],mesh=new T.Mesh(geos[vis.mesh],m.groups.map(([cls])=>mats[e.look[cls]]??mats.black));
+      mesh.scale.setScalar(E.unit);mesh.position.fromArray(vis.xyz);mesh.quaternion.setFromEuler(new T.Euler(vis.rpy[0],vis.rpy[1],vis.rpy[2],'ZYX'));
+      mesh.castShadow=mesh.receiveShadow=true;mesh.userData.end=e.id;links.get(vis.link).add(mesh);
+    }
+    plate.receiveShadow=post.castShadow=post.receiveShadow=true;plate.userData.end=post.userData.end=e.id;
+    const u={e,E,slot,holder,joints,size:null};
+    setPose(u,0);
+    // Stand it on the post (open): the middle of its lowest face (the wrist flange, on all but LEAP's palm edge) over
+    // the post's axis, that face on the post's top. Not the root link's origin: Unitree's Dex5-1 puts that at the
+    // thumb's root, 27 mm off its flange, Allegro's and LEAP's frames are off too.
+    // Both boxes from the vertices themselves: a box from the meshes' own boxes grows with every rotation.
+    slot.updateMatrixWorld(true);const b=new T.Box3(),foot=new T.Box3(),p=new T.Vector3();
+    const each=f=>holder.traverse(o=>{if(!o.isMesh)return;const a=o.geometry.attributes.position;for(let k=0;k<a.count;k++)f(p.fromBufferAttribute(a,k).applyMatrix4(o.matrixWorld));});
+    each(v=>b.expandByPoint(v));each(v=>{if(v.y<b.min.y+.002)foot.expandByPoint(v);});
+    const c=foot.isEmpty()?holder.getWorldPosition(new T.Vector3()):foot.getCenter(new T.Vector3());
+    holder.position.set(slot.position.x-c.x,POST-b.min.y,slot.position.z-c.z);slot.updateMatrixWorld(true);
+    u.size=b.getSize(new T.Vector3()).toArray().map(x=>Math.round(x*1000));   // x: width, y: length, z: thickness
+    const el=document.createElement('div');el.className='tag';el.style.setProperty('--tone',`var(${e.tone})`);
+    const mass=e.spec.mass!=null?`${e.spec.mass} kg`:`URDF ${E.mass.toFixed(2)} kg`;
+    el.innerHTML=`<b>${num(e)}<em> · ${esc(e.name)}</em></b><span>${esc(e.brand)} · ${mass}</span>`;overlay.appendChild(el);
+    labels.push({el,u,pos:new T.Vector3(X(e),POST+b.max.y-b.min.y+.012,ROW[e.group])});
+    units.push(u);setPose(u,S.t);show();compile();render();
+  }
+  // Joint values: the driving joints between their open and closed values, then mimic joints (multiplier × driver +
+  // offset) and linkage joints (a table over the driver), each within its limits; continuous joints have none.
+  function setPose(u,t){
+    const {e}=u,q={},lim=(j,v)=>j.limit?Math.min(j.limit[1],Math.max(j.limit[0],v)):v;
+    for(const {j} of u.joints){if(j.mimic||j.table)continue;const a=e.open?.[j.name]??0,b=e.closed?.[j.name]??0;q[j.name]=lim(j,a+(b-a)*t);}
+    for(const {j} of u.joints){
+      if(j.mimic)q[j.name]=lim(j,j.mimic.multiplier*(q[j.mimic.joint]??0)+j.mimic.offset);
+      else if(j.table){const {x,y}=j.table,v=Math.min(x[x.length-1],Math.max(x[0],q[j.table.joint]??0));let k=0;while(k<x.length-2&&v>x[k+1])k++;q[j.name]=y[k]+(y[k+1]-y[k])*(v-x[k])/(x[k+1]-x[k]);}
+    }
+    for(const {j,motion,axis} of u.joints){const v=q[j.name]??0;if(j.type==='prismatic')motion.position.copy(axis).multiplyScalar(v);else motion.quaternion.setFromAxisAngle(axis,v);}
+  }
+  function pose(){for(const u of units)setPose(u,S.t);render();}
+  let raf=0,t0=0;
+  function animate(){
+    if(raf)return;t0=performance.now()-Math.acos(1-2*S.t)/(2*PI)*3200;
+    const step=now=>{if(!S.play){raf=0;return;}S.t=(1-Math.cos((now-t0)/3200*2*PI))/2;$('grip').value=Math.round(S.t*100);gripText();for(const u of units)setPose(u,S.t);renderer.render(scene,camera);placeLabels();raf=requestAnimationFrame(step);};
+    raf=requestAnimationFrame(step);
+  }
+  let compiling=Promise.resolve();
+  function compile(){compiling=compiling.then(()=>renderer.compileAsync(scene,camera)).catch(err=>console.warn('[ends] compileAsync',err)).then(render);return compiling;}
+  let envTexture=null;
+  function applyLook(makeEnv=true){
+    if(makeEnv&&S.env&&!envTexture){const pmrem=new T.PMREMGenerator(renderer);envTexture=pmrem.fromScene(new RoomEnvironment(),.04).texture;pmrem.dispose();}
+    const env=S.env&&envTexture;scene.environment=env?envTexture:null;hemi.intensity=env?.5:1.0;key.intensity=env?1.7:2.2;fill.intensity=env?.3:.7;rim.intensity=env?.3:.6;
+    key.castShadow=S.shadows;compile();
+  }
+  // Only the rows the focus shows: the others would stand in front of the camera. Labels lose their second line when
+  // the ends of a row get less than 190 px of the stage's width each, and keep only the number below 110 px and in
+  // the view of all three rows.
+  function show(){const r=rowOf(S.focus);for(const u of units)u.slot.visible=!r||u.e.group===r;compact();}
+  function compact(){
+    const one=ENDS.some(e=>e.id===S.focus),px=stage.clientWidth/Math.max(1,units.filter(u=>u.slot.visible).length);
+    overlay.classList.toggle('compact',S.focus==='all'||(!one&&px<110));overlay.classList.toggle('mid',!one&&px<190);
+  }
+  // The key light's shadow covers what is shown, so a single row or hand gets the map's full resolution.
+  function fitShadow(box){
+    const c=box.getCenter(new T.Vector3()),r=box.getSize(new T.Vector3()).length()/2+.05,cam=key.shadow.camera;
+    key.target.position.copy(c);key.position.copy(c).addScaledVector(KEY,r+2);key.target.updateMatrixWorld();
+    Object.assign(cam,{left:-r,right:r,top:r,bottom:-r,near:.1,far:2*r+4});cam.updateProjectionMatrix();
+  }
+  const HOME=new T.Vector3(.22,.34,1).normalize(),ALL=new T.Vector3(.16,.78,1).normalize(),ONE=new T.Vector3(.38,.28,1).normalize();
+  function frame(box,dir){
+    const c=box.getCenter(new T.Vector3()),corners=[];for(const x of [box.min.x,box.max.x])for(const y of [box.min.y,box.max.y])for(const z of [box.min.z,box.max.z])corners.push(new T.Vector3(x,y,z));
+    let d=box.getSize(new T.Vector3()).length();controls.target.copy(c);
+    for(let k=0;k<8;k++){camera.position.copy(c).addScaledVector(dir,d);camera.lookAt(c);camera.updateMatrixWorld();let mx=0,my=0;for(const p of corners){const q=p.clone().project(camera);mx=Math.max(mx,Math.abs(q.x));my=Math.max(my,Math.abs(q.y));}d*=Math.max(mx/.92,my/.8);}
+    controls.update();render();
+  }
+  function focus(){
+    show();
+    // The hands and their posts down to the floor, not the plates under them.
+    const box=new T.Box3(),one=ENDS.some(e=>e.id===S.focus);
+    for(const u of units)if(u.slot.visible&&(!one||u.e.id===S.focus))box.union(new T.Box3().setFromObject(u.holder));
+    if(box.isEmpty())return;
+    box.min.y=0;box.max.y+=one?.045:.03;   // room for the labels over the hands
+    const all=new T.Box3();for(const u of units)if(u.slot.visible)all.union(new T.Box3().setFromObject(u.slot));
+    fitShadow(all.isEmpty()?box:all);
+    frame(box,S.focus==='all'?ALL:one?ONE:HOME);
+  }
+  // Click (not drag) on an end to look at it alone; on empty floor to see all again.
+  const ray=new T.Raycaster(),ndc=new T.Vector2();let down=null;
+  canvas.addEventListener('pointerdown',ev=>{down=[ev.clientX,ev.clientY];});
+  canvas.addEventListener('pointerup',ev=>{
+    if(!down||Math.hypot(ev.clientX-down[0],ev.clientY-down[1])>4)return;down=null;
+    const r=canvas.getBoundingClientRect();ndc.set((ev.clientX-r.left)/r.width*2-1,-(ev.clientY-r.top)/r.height*2+1);ray.setFromCamera(ndc,camera);
+    const hit=ray.intersectObjects(units.filter(u=>u.slot.visible).map(u=>u.slot),true).find(h=>h.object.userData.end);
+    setFocus(hit?(S.focus===hit.object.userData.end?'all':hit.object.userData.end):'all');
+  });
+  const measure=id=>{const u=units.find(x=>x.e.id===id);return u?[u.size[1],u.size[0],u.size[2]]:null;};
+  async function ready(){await compiling;focus();applyLook(false);await compiling;}
+  return {add,pose,animate,applyLook,focus,render,measure,ready,units,scene,camera,renderer};
+}
+
+renderControls();renderCards();renderNotes();renderResult();load3D();
+</script>
+</body>
+</html>
